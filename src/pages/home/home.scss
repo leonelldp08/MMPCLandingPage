@@ -1,0 +1,42 @@
+.shell-container {
+  min-height: 100vh;
+  /* Full viewport height */
+  display: flex;
+  flex-direction: column;
+}
+
+.main-container {
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.3s ease; /* Smooth transition for shifting the table */
+}
+
+.content {
+  flex: 1 0 auto;
+  /* Take up available space */
+}
+
+footer {
+  flex-shrink: 0;
+  /* Don’t shrink */
+  // background: #333;
+  // color: #fff;
+  padding: 1rem;
+  text-align: center;
+}
+
+.p-tieredmenu {
+  left: 0;
+}
+
+.p-menuitem-icon.user-icon {
+    width: 20px;
+    height: 20px;
+    background-image: url('../../assets/avatar.png');
+    background-size: cover;
+    background-position: center;
+    // Hide any default content for the icon
+    &::before {
+      content: none;
+    }
+  }

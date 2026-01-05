@@ -1,0 +1,36 @@
+<div class="page-bg flex min-h-screen items-center justify-center bg-gray-100">
+  <div class="grid grid-cols-[45%_55%] bg-white border border-surface-200 dark:border-surface-700 rounded hover:shadow-lg hover:scale-101 transition-all duration-200 md:w-full max-w-4xl">
+    <div>
+      <p-galleria [value]="imageData" [responsiveOptions]="responsiveOptions" [shouldStopAutoplayByClick]="false" showIndicators]="false" [showThumbnails]="false" [showIndicatorsOnItem]="false"
+        indicatorsPosition="top" [autoPlay]="true" [circular]="true" [containerStyle]="{'width': '100%'}">
+        <ng-template #item let-item>
+          <img [src]="item.itemImageSrc" style="width: 100%; height: 400px; object-fit: cover; display: block" [alt]="item.alt" />
+        </ng-template>
+        <ng-template #caption let-item>
+          <div class="text-xl mb-2 font-bold">{{ item.title }}</div>
+          <p class="text-white">{{ item.alt }}</p>
+        </ng-template>
+      </p-galleria>
+    </div>
+    <div class="p-4">
+      <h2 class="text-2xl font-bold mb-6 text-center">MMPC Apps Login</h2>
+      <br><br>
+      <form (ngSubmit)="login()" #loginForm="ngForm">
+        <p-floatlabel variant="on">
+          <input pInputText id="username" [fluid]="true" [(ngModel)]="username" autocomplete="off" name="username"/>
+          <label for="username">Username</label>
+        </p-floatlabel>
+        <br>
+        <p-floatlabel variant="on">
+          <p-password [(ngModel)]="password" [toggleMask]="true" [fluid]="true" [feedback]="false" name="password" />
+          <label for="password">Password</label>
+        </p-floatlabel>
+        <br>
+        <div class="flex justify-end gap-2">
+          <p-button [label]="btnLabel" icon="pi pi-sign-in" type="submit" class="pr-2" [loading]="loading"></p-button>
+          <p-button label="Clear" icon="pi pi-eraser" type="button" severity="danger" class="" (click)="clearForm()"></p-button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
