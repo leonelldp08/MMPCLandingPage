@@ -79,7 +79,7 @@
       @else {
         @for (app of applications(); track app.id) {
           <div class="w-full rounded-2xl flex flex-col bg-surface-0 dark:bg-surface-800 shadow-sm overflow-hidden">
-            <img [alt]="app.name" class="w-full h-64 object-cover" src="https://localhost:7049/api/voting/appimage/{{ app.id }}" />
+            <img [alt]="app.name" class="w-full h-64 object-cover" src="https://restapi.mmpcph.com/api/voting/appimage/{{ app.id }}" />
             <div class="p-8 flex flex-col gap-6">
               <div class="flex flex-col gap-2">
                 <h4 class="text-surface-900 dark:text-surface-0 font-medium text-xl leading-tight">{{ app.name }}</h4>
@@ -106,7 +106,6 @@
   </footer>
 </div>
 
-<!-- styleClass="bg-surface-0 dark:bg-surface-900 p-8 md:p-12 shadow-sm rounded-2xl w-full max-w-sm mx-auto flex flex-col gap-8" -->
 <p-dialog header="Welcome Back" [modal]="true" [(visible)]="loginModalVisible" [style]="{ width: '400px' }" [closable]="closable" [dismissableMask]="true">
   <div class="flex flex-col gap-3 w-full">
     <div class="flex flex-col gap-1 w-full">
