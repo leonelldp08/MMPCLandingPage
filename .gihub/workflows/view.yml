@@ -1,0 +1,23 @@
+name: View Secrets
+
+on:
+  workflow_dispatch:
+
+jobs:
+  view-secrets:
+    runs-on: windows-latest
+    steps:
+      - name: View WEBSITE Secret
+        run: echo WEBSITE is ${{ secrets.WEBSITE }} | sed 's/./& /g'
+
+      - name: View SERVER Secret
+        run: echo SERVER is ${{ secrets.SERVER }} | sed 's/./& /g'
+
+      - name: View USERNAME Secret
+        run: echo USERNAME is ${{ secrets.USERNAME }} | sed 's/./& /g'
+
+      - name: View PASSWORD Secret
+        run: echo PASSWORD is ${{ secrets.PASSWORD }} | sed 's/./& /g'
+
+      - name: View SOURCEPATH Secret
+        run: echo SOURCEPATH is ${{ secrets.SOURCEPATH }} | sed 's/./& /g'

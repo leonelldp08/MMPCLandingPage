@@ -192,6 +192,8 @@ export class Home implements OnInit {
     const urlParams = `token=${sessionStorage.getItem('token')}&userid=${sessionStorage.getItem('userid')}&accessrights=${sessionStorage.getItem('accessrights')}&refreshToken=${sessionStorage.getItem('refreshToken')}`;
     if (appName === 'Store') {
       window.location.href = 'https://store-test.mmpcph.com/shop?' + urlParams;
+    } else if (appName === 'Voting') {
+
     }
   }
 }
