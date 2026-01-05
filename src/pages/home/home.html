@@ -1,0 +1,126 @@
+<div class="shell-container main-container">
+  <header>
+    <div class="card">
+      <p-menubar styleClass="dark:bg-gray-900" [style]="{ 'border-radius': '0' }">
+        <ng-template #start>
+          <p-avatar image="assets/MMPC_Logo.png" class="flex items-center justify-center mr-2 logo" size="large" />
+          <p class="font-semibold">Maxim Multi-Purpose Cooperative</p>
+        </ng-template>
+        <ng-template #end>
+          <div class="hidden sm:flex">
+            @if (loggedUserId != '') {
+              <p-menu #profileMenu [model]="profileItem" [popup]="true" />
+              <p-button [label]="loggedUsername" [rounded]="true" severity="secondary" (click)="profileMenu.toggle($event)" size="small">
+                <img src="https://restapi.mmpcph.com/api/user/image/{{ loggedUserId }}" pButtonIcon width="24" height="24" class="rounded-full"
+                  (load)="onAvatarLoad()" (error)="onAvatarError($event)" [style.display]="isAvatarLoaded ? 'block' : 'none'"/>
+                @if (!isAvatarLoaded) {
+                  <p-skeleton width="24px" height="24px" shape="circle"></p-skeleton>
+                }
+              </p-button>
+            }
+            @else {
+              <div class="flex justify-end gap-2">
+                <p-button label="Login" variant="text" severity="secondary" size="small" (click)="loginModalVisible = true"></p-button>
+                <p-button label="Register" severity="primary" size="small"></p-button>
+              </div>
+            }
+          </div>
+          <div class="sm:hidden">
+            <p-tieredmenu #menu [model]="loggedUserId != '' ? tieredMenuLogged : tieredMenuDefault" [popup]="true" appendTo="body">
+              <ng-template #item let-item let-hasSubmenu="hasSubmenu">
+                <a pRipple class="flex items-center p-tieredmenu-item-link" (click)="toggleSubmenu(item)">
+                  @if (item.label === loggedUsername) {
+                    <img src="https://restapi.mmpcph.com/api/user/image/{{ loggedUserId }}" pButtonIcon width="24" height="24" class="rounded-full"
+                      (load)="onAvatarLoad()" (error)="onAvatarError($event)" [style.display]="isAvatarLoaded ? 'block' : 'none'"/>
+                    @if (!isAvatarLoaded) {
+                      <p-skeleton width="24px" height="24px" shape="circle"></p-skeleton>
+                    }
+                  } @else {
+                    <span [class]="item.icon" class="p-tieredmenu-item-icon"></span>
+                  }
+                  <span class="ml-2">{{ item.label }}</span>
+                  @if (hasSubmenu) {
+                    <i [class]="getSubmenuIconClass(item)" class="ml-auto"></i>
+                  }
+                </a>
+              </ng-template>
+            </p-tieredmenu>
+            <p-button icon="pi pi-bars" variant="text" severity="secondary" (click)="menu.toggle($event);" />
+          </div>
+        </ng-template>
+      </p-menubar>
+    </div>
+  </header>
+  <main class="content bg-surface-50 dark:bg-surface-950 px-6 py-20 md:px-12 lg:px-20">
+    <div class="flex flex-col gap-4 items-center justify-center mb-12">
+      <div class="text-surface-900 dark:text-surface-0 font-bold text-4xl lg:text-5xl text-center leading-tight">MMPC Digital Workspace</div>
+      <div class="text-surface-500 dark:text-surface-400 text-lg text-center leading-normal">Centralized access to all your essential business applications and tools in one secure platform.</div>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-4 max-w-7xl mx-auto">
+      @if (applicationsLoading()) {
+        @for (app of applicationSkeletons; track $index) {
+          <div class="w-full rounded-2xl flex flex-col bg-surface-0 dark:bg-surface-800 shadow-sm overflow-hidden">
+            <p-skeleton class="w-full object-cover" height="250px" />
+            <div class="p-8 flex flex-col gap-6">
+              <div class="flex flex-col gap-2">
+                <p-skeleton width="100%" height="2rem" class="mb-2" />
+                <p-skeleton width="80%" height=".5rem" />
+                <p-skeleton width="60%" height=".5rem" />
+                <p-skeleton width="90%" height=".5rem" />
+                <p-skeleton width="80%" height=".5rem" />
+                <p-skeleton width="70%" height=".5rem" />
+                <p-skeleton width="60%" height=".5rem" />
+              </div>
+              <p-skeleton width="100%" height="2.5rem" />
+            </div>
+          </div>
+        }
+      }
+      @else {
+        @for (app of applications(); track app.id) {
+          <div class="w-full rounded-2xl flex flex-col bg-surface-0 dark:bg-surface-800 shadow-sm overflow-hidden">
+            <img [alt]="app.name" class="w-full h-64 object-cover" src="https://localhost:7049/api/voting/appimage/{{ app.id }}" />
+            <div class="p-8 flex flex-col gap-6">
+              <div class="flex flex-col gap-2">
+                <h4 class="text-surface-900 dark:text-surface-0 font-medium text-xl leading-tight">{{ app.name }}</h4>
+                <p class="text-surface-500 dark:text-surface-400 leading-normal" style="white-space: pre-line;">{{ app.description }}</p>
+              </div>
+              @if (app.name === 'Voting' && loggedUserId != '') {
+                <div class="flex gap-2 justify-between">
+                  <p-button label="Visit Site" [rounded]="true" styleClass="flex-1" (click)="visitSite(app.name)"></p-button>
+                  <p-select [options]="voterTypeOptions" [(ngModel)]="voterType" optionLabel="label" styleClass="flex-1" appendTo="body"/>
+                </div>
+              } @else {
+                <p-button label="Visit Site" [rounded]="true" styleClass="w-full" (click)="visitSite(app.name)"></p-button>
+              }
+            </div>
+          </div>
+        }
+      }
+    </div>
+  </main>
+  <footer class="dark:bg-gray-900 border-none p-4 mt-auto">
+    <div class="card">
+      <p>&copy; 2026 Maxim Multi-Purpose Cooperative</p>
+    </div>
+  </footer>
+</div>
+
+<!-- styleClass="bg-surface-0 dark:bg-surface-900 p-8 md:p-12 shadow-sm rounded-2xl w-full max-w-sm mx-auto flex flex-col gap-8" -->
+<p-dialog header="Welcome Back" [modal]="true" [(visible)]="loginModalVisible" [style]="{ width: '400px' }" [closable]="closable" [dismissableMask]="true">
+  <div class="flex flex-col gap-3 w-full">
+    <div class="flex flex-col gap-1 w-full">
+      <label for="email1" class="text-surface-900 dark:text-surface-0 font-medium leading-normal">Username</label>
+      <input [(ngModel)]="username" pInputText id="email1" type="text" placeholder="Username" [disabled]="usernameDisabled" class="w-full px-3 py-2 shadow-sm rounded-lg" />
+    </div>
+    <div class="flex flex-col gap-1 w-full">
+      <label for="password1" class="text-surface-900 dark:text-surface-0 font-medium leading-normal">Password</label>
+      <input [(ngModel)]="password" pInputText id="password1" type="password" placeholder="Password" [disabled]="passwordDisabled" class="w-full px-3 py-2 shadow-sm rounded-lg" />
+    </div>
+  </div>
+  <br>
+  <button pButton class="w-full py-2 rounded-lg flex justify-center items-center gap-2" (click)="login()" severity="primary" [disabled]="buttonDisabled">
+    <i pButtonIcon class="pi pi-user text-base! leading-normal!"></i>
+    <span pButtonLabel>Sign In</span>
+  </button>
+</p-dialog>

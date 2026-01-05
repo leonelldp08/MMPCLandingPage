@@ -1,0 +1,35 @@
+name: Deploy MMPC Applications
+
+on:
+  pull_request:
+    branches:
+    - main
+  workflow_dispatch:
+
+jobs:
+  build-and-deploy:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install Dependencies
+        run: npm install
+
+      - name: Build Angular Application
+        run: npm run build
+
+      - name: Deploy to Angular test
+        uses: talunzhang/auto-web-deploy@v1.0.1
+        with:
+          website-name: ${{ secrets.WEBSITE }}
+          server-computer-name: ${{ secrets.SERVER }}
+          server-username: ${{ secrets.USERNAME }}
+          server-password: ${{ secrets.PASSWORD }}
+          source-path: ${{ secrets.SOURCEPATH }}
+          target-delete: true
